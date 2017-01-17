@@ -26,6 +26,8 @@ var _classnames2 = _interopRequireDefault(_classnames);
 
 var _utils = require('../utils');
 
+var original = "";
+
 //require('./Nestable.css');
 
 var _NestableItem = require('./NestableItem');
@@ -108,6 +110,7 @@ var Nestable = (function (_Component) {
         };
 
         _this.onDragStart = function (e, item) {
+            original = _this.state.items;
             if (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -119,12 +122,13 @@ var Nestable = (function (_Component) {
             _this.setState({
                 dragItem: item
             });
-        };
+        };      
 
         _this.onDragEnd = function (e) {
             e && e.preventDefault();
 
             var onChange = _this.props.onChange;
+
             var _this$state = _this.state,
                 items = _this$state.items,
                 isDirty = _this$state.isDirty,
@@ -220,6 +224,13 @@ var Nestable = (function (_Component) {
                     collapsedGroups: collapsedGroups.concat(item.id)
                 });
             }
+        };
+
+        _this.rollback = function (e) {
+            e && e.preventDefault();
+            _this.setState({
+                items: original
+            });
         };
 
         _this.state = {
